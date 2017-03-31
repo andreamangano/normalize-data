@@ -1,0 +1,51 @@
+{
+  "name": "normalize-data",
+  "version": "1.0.0",
+  "description": "A library to easily normalize complex data structure.",
+  "main": "build/index.js",
+  "scripts": {
+    "dev": "onchange src -- npm run build",
+    "build": "babel src -d build",
+    "test": "jest",
+    "test:watch": "npm test -- --watch",
+    "prepublish": "npm run build",
+    "release": "np"
+  },
+  "babel": {
+    "presets": [
+      "latest"
+    ]
+  },
+  "files": [
+    "build/"
+  ],
+  "author": "Andrea Mangano <andreaman87@gmail.com> (http://andreamangano.com)",
+  "license": "ISC",
+  "homepage": "https://github.com/andreamangano/normalize-data#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andreamangano/confetti-cli"
+  },
+  "bugs": {
+    "url": "https://github.com/andreamangano/normalize-data/issues"
+  },
+  "keywords": [
+    "normalize",
+    "data",
+    "object",
+    "structure",
+    "transform",
+    "convert",
+    "converting"
+  ],
+  "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-preset-latest": "^6.24.0",
+    "jest": "^19.0.2",
+    "np": "^2.13.1",
+    "onchange": "^3.2.1"
+  },
+  "dependencies": {
+    "object-path": "^0.11.4"
+  }
+}
