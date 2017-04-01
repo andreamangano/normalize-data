@@ -74,10 +74,13 @@ const expectedObjWithOtherProperties = {
   firstHobby: 'Golf'
 };
 
-test('It should return a normalized obj that doesn\'t preserve the other object properties', () => {
-  expect(n.normalize(obj, map)).toEqual(expectedObjWithoutOtherProperties);
-});
-
-test('It should return a normalized obj that preserves the other object properties', () => {
-  expect(n.normalize(obj, map, true)).toEqual(expectedObjWithOtherProperties);
+describe('normalize(object, map, preserve)', () => {
+  // Run n.normalize(obj, map)
+  test('It should return a normalized obj that doesn\'t preserve the other object properties', () => {
+    expect(n.normalize(obj, map)).toEqual(expectedObjWithoutOtherProperties);
+  });
+  // Run n.normalize(obj, map, true)
+  test('It should return a normalized obj that preserves the other object properties', () => {
+    expect(n.normalize(obj, map, true)).toEqual(expectedObjWithOtherProperties);
+  });
 });
