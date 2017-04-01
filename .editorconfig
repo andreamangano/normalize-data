@@ -1,0 +1,15 @@
+# http://editorconfig.org
+root = true
+
+[*]
+end_of_line = lf
+indent_style = space
+indent_size = 2
+charset = utf-8
+trim_trailing_whitespace = true
+space_after_type_colon = true
+insert_final_newline = true
+keep_blank_lines_in_code = 1
+
+[*.md]
+trim_trailing_whitespace = false
