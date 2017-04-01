@@ -23,7 +23,7 @@ Import the library using require:
 const n = require('normalize-data');
 ```
 
-Otherwise, ee can also include an ES2015 modules version:
+Otherwise, we can also include an ES2015 modules version:
 
 ``` javascript
 import n from 'normalize-data';
