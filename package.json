@@ -42,6 +42,7 @@
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-preset-latest": "^6.24.0",
+    "codecov": "^2.1.0",
     "eslint": "^3.19.0",
     "eslint-config-xo-space": "^0.16.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
