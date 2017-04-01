@@ -1,13 +1,13 @@
 {
   "name": "normalize-data",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A library to easily normalize complex data structure.",
   "main": "build/index.js",
   "scripts": {
     "dev": "onchange src -- npm run build",
     "build": "babel src -d build",
     "test:lint": "eslint src/**.js",
-    "test": "npm run test:lint && jest build/*.test.js",
+    "test": "npm run test:lint && jest build/*.test.js --coverage",
     "test:watch": "npm test -- --watch",
     "prepublish": "npm run build",
     "release": "np --no-publish"
@@ -42,6 +42,7 @@
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-preset-latest": "^6.24.0",
+    "codecov": "^2.1.0",
     "eslint": "^3.19.0",
     "eslint-config-xo-space": "^0.16.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
