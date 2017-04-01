@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "xo-space/esnext"
+  ],
+  "env": {
+    "node": true, // Node.js global variables and Node.js scoping.
+    "jest": true // adds all of the Jest testing global variables.
+  },
+  "rules": {
+    "operator-linebreak": ["error", "before"]
+  }
+}

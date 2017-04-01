@@ -8,7 +8,7 @@ const takeFirstNHobbies = (hobbies, n) => {
 };
 
 const filterWords = (text, words, replacement) => {
-  const regex = new RegExp(words.join("|"),"gi");
+  const regex = new RegExp(words.join('|'), 'gi');
   return text.replace(regex, replacement);
 };
 
@@ -31,10 +31,10 @@ const map = [
 ];
 
 const obj = {
-  name: "Mario Rossi",
+  name: 'Mario Rossi',
   info: {
-    email: "mariorossi@email.com",
-    twitter: "@mariorossitweeter"
+    email: 'mariorossi@email.com',
+    twitter: '@mariorossitweeter'
   },
   tags: 'Javascript, CSS, HTML',
   age: 30,
@@ -47,8 +47,8 @@ const obj = {
 };
 
 const expectedObjWithoutOtherProperties = {
-  fullName: "Mario Rossi",
-  email: "mariorossi@email.com",
+  fullName: 'Mario Rossi',
+  email: 'mariorossi@email.com',
   tags: [
     'Javascript',
     'CSS',
@@ -59,10 +59,10 @@ const expectedObjWithoutOtherProperties = {
 };
 
 const expectedObjWithOtherProperties = {
-  fullName: "Mario Rossi",
-  email: "mariorossi@email.com",
+  fullName: 'Mario Rossi',
+  email: 'mariorossi@email.com',
   info: {
-    twitter: "@mariorossitweeter"
+    twitter: '@mariorossitweeter'
   },
   tags: [
     'Javascript',

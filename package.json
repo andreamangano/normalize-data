@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "onchange src -- npm run build",
     "build": "babel src -d build",
-    "test": "jest",
+    "test:lint": "eslint src/**.js",
+    "test": "npm run test:lint && jest",
     "test:watch": "npm test -- --watch",
     "prepublish": "npm run build",
     "release": "np"
@@ -41,6 +42,10 @@
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-preset-latest": "^6.24.0",
+    "eslint": "^3.19.0",
+    "eslint-config-xo-space": "^0.16.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3",
     "jest": "^19.0.2",
     "np": "^2.13.1",
     "onchange": "^3.2.1"
