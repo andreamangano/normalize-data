@@ -1,0 +1,15 @@
+machine:
+  node:
+    version: 7.0.0
+  environment:
+    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+
+dependencies:
+  pre:
+    - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+
+test:
+  post:
+    - npm run build
+    - if [ $CIRCLE_BRANCH = 'master' ]; then npm publish; fi
+    - "if [ $CIRCLE_BRANCH = 'master' ]; then git tag $(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g') && git push --tags; fi"
