@@ -10,7 +10,7 @@
     "test": "npm run test:lint && jest build/*.test.js",
     "test:watch": "npm test -- --watch",
     "prepublish": "npm run build",
-    "release": "np"
+    "release": "np --no-publish"
   },
   "babel": {
     "presets": [
