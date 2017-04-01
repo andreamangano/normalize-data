@@ -7,7 +7,7 @@
     "dev": "onchange src -- npm run build",
     "build": "babel src -d build",
     "test:lint": "eslint src/**.js",
-    "test": "npm run test:lint && jest",
+    "test": "npm run test:lint && jest build/*.test.js",
     "test:watch": "npm test -- --watch",
     "prepublish": "npm run build",
     "release": "np"
