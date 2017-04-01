@@ -1,4 +1,7 @@
 # Normalize Data
+[![npm version](https://badge.fury.io/js/normalize-data.svg)](http://badge.fury.io/js/normalize-data)
+[![CircleCI](https://circleci.com/gh/andreamangano/normalize-data.svg?style=svg)](https://circleci.com/gh/andreamangano/normalize-data)
+
 The library easily normalizes simple and complex data structure
 changing where necessary the properties values themselves.
 
