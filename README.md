@@ -1,6 +1,6 @@
 # Normalize Data
 [![npm version](https://badge.fury.io/js/normalize-data.svg)](http://badge.fury.io/js/normalize-data)
-[![CircleCI](https://circleci.com/gh/andreamangano/normalize-data.svg?style=svg)](https://circleci.com/gh/andreamangano/normalize-data)
+[![CircleCI](https://circleci.com/gh/andreamangano/normalize-data.svg?style=shield)](https://circleci.com/gh/andreamangano/normalize-data)
 [![codecov](https://codecov.io/gh/andreamangano/normalize-data/branch/master/graph/badge.svg)](https://codecov.io/gh/andreamangano/normalize-data)
 
 The library easily normalizes simple and complex data structure
@@ -36,7 +36,7 @@ import n from 'normalize-data';
 ## How to use the library
 The following examples will show how to:
   - rename an object property
-  - how to map a new object property on a previous one
+  - map a new object property on a previous one
   - apply a transformation function to change the property value
 
 Let's suppose that we need to normalize the data structure below:
