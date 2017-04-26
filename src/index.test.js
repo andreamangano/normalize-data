@@ -12,9 +12,12 @@ const filterWords = (text, words, replacement) => {
   return text.replace(regex, replacement);
 };
 
+const getFullAddress = (street, state, postalCode) => `${street}, ${state}, ${postalCode}`;
+
 const map = [
   ['fullName', 'name'],
   ['email', 'info.email'],
+  ['fullAddress', ['address.street', 'address.state', 'address.postalCode'], getFullAddress],
   // Converts tags string into an array
   ['tags', 'tags', transformTagsIntoArray],
   // Take the first hobby (Last item of array indicates the optional parameter for che functions)
@@ -36,6 +39,11 @@ const obj = {
     email: 'mariorossi@email.com',
     twitter: '@mariorossitweeter'
   },
+  address: {
+    street: '803 11th Avenue',
+    state: 'California',
+    postalCode: '94089'
+  },
   tags: 'Javascript, CSS, HTML',
   age: 30,
   description: 'This is a description where some words will be filtered.',
@@ -49,6 +57,7 @@ const obj = {
 const expectedObjWithoutOtherProperties = {
   fullName: 'Mario Rossi',
   email: 'mariorossi@email.com',
+  fullAddress: '803 11th Avenue, California, 94089',
   tags: [
     'Javascript',
     'CSS',
@@ -64,6 +73,8 @@ const expectedObjWithOtherProperties = {
   info: {
     twitter: '@mariorossitweeter'
   },
+  fullAddress: '803 11th Avenue, California, 94089',
+  address: {},
   tags: [
     'Javascript',
     'CSS',

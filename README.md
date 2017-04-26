@@ -10,6 +10,7 @@ Simply you can:
 - rename the object properties
 - change the property depth
 - transform the properties values by dedicated functions
+- create a new property starting from another object properties
 
 ## Installation
 Install the library as any other global npm package. Be sure to have npm, git and node installed.
@@ -44,10 +45,10 @@ Let's suppose that we need to normalize the data structure below:
 ``` javascript
 // Object structure before normalization
 var obj = {
-  name: "Mario Rossi",
+  name: 'Mario Rossi',
   contacts: {
-    email: "mariorossi@email.com",
-    twitter: "@mariorossitweeter"
+    email: 'mariorossi@email.com',
+    twitter: '@mariorossitweeter'
   },
   tags: 'Javascript, CSS, HTML',
   age: 30,
@@ -56,8 +57,7 @@ var obj = {
 };
 ```
 
-First of all, we need to create a transformation map. It's a simple array of config that defines
-how a set of object properties will change.
+First of all, we need to create a transformation map. It's a simple array of config that defines how a set of object properties will change.
 
 ``` javascript
 const n = require('normalize-data');
@@ -94,14 +94,15 @@ If you want to preserve the other object properties (not subjected to the normal
 you just need to set the `preserve` parameter to `true`:
 
 ``` javascript
+// The example here takes the same "transformMap" of the previous example
 console.log(n.normalize(obj, transformMap, true));
 
 /* OUTPUT OBJECT:
  {
-   contacts: { twitter: '@mariorossitweeter' },
+   contacts: { twitter: '@mariorossitweeter' }, // Preserved property
    tags: [ 'Javascript', 'CSS', 'HTML' ],
-   age: 30,
-   hobbies: [ 'Golf', 'Football', 'Tennis' ],
+   age: 30, // Preserved property
+   hobbies: [ 'Golf', 'Football', 'Tennis' ], // Preserved property
    fullName: 'Mario Rossi',
    email: 'mariorossi@email.com',
    info: { description: 'This is a profile description.' }
@@ -167,12 +168,17 @@ function filterWords(text, words, replacement) {
 
 var transformMap = [
   ...,
-  ['hobbies', 'hobbies', takeFirstNHobbies, 2], // One options parameter only (2)
-  ['info.description', 'description', filterWords,
-    [
-      ['is', 'profile'],
-      '***'
-    ] // Two optional parameters passed as array of values
+  [
+    'hobbies', // New property name
+    'hobbies', // Old property name
+    takeFirstNHobbies, // Transformation function
+    2 // One option parameter only
+  ],
+  [
+    'info.description', // New property name
+    'description', // Old property name
+    filterWords, // Transformation function
+    [ ['is', 'profile'], '***' ] // Two optional parameters passed as array of values
   ]
   ...
 ];
@@ -201,7 +207,7 @@ It's a simple array of config that defines how a set of object properties will c
 
 The configuration for a single object property has at most four parameters:
 - the new property name (required)
-- the old property name (required)
+- the old property name (required). It could be an Array of old properties names.
 - a transformationFunction (optional)
 - a set of optional parameters (optional)
 
@@ -211,65 +217,336 @@ The configuration for a single object property has at most four parameters:
 
 var transformMap = [
   ...,
-  ["New property name", "Old property name", transformFunction, optionalParameters]
+  [
+    "New property name", // Required
+    "Old property name" | ["Old property name 1", "Old property name 2", ...], // Required
+    transformFunction, // Not required
+    optionalParameter | [optionalParameter1, optionalParameter2, ...] // Not required
+  ]
   ...
 ]
 ```
 
-#### Example 1
+## Examples
+
+### Example 1: Rename an object property.
+
+#### Abstract
 
 ``` javascript
-// Example 1: Renames an object property
+   var objectToNormalize = {
+     ...,
+     property: value,
+     ...
+   };
+   
+   var transformMap = {
+     ...,
+     [ 'newPropertyName', 'oldPropertyName' ], // Config item
+     ...
+   };
+   
+   n.normalize(objToNormalize, transformMap, ...);
+   
+   /* OUTPUT OBJECT:
+   {
+      ...,
+      newPropertyName: value,
+      ...
+   }
+   */
+```
+
+#### Practical
+
+``` javascript
+var n = require('normalize-data');
+
+var objToNormalize = {
+  name: 'Mario',
+  surname: 'Rossi',
+  years: 30
+};
 
 var transformMap = [
-  ...,
-  ["fullName", "name"] // The property "name" of the initial object will be renamed in "fullName"
-  ...
-]
+  ['age', 'years'] // The property "years" of the initial object will be renamed in "age"
+];
+
+// Note that we're using the "preserve" parameter to true for preserving the old object structure
+console.log(n.normalize(objToNormalize, transformMap, true));
+
+/* OUTPUT OBJECT:
+{
+  name: 'Mario',
+  surname: 'Rossi',
+  age: 30
+}
+*/
 ```
 
-#### Example 2
+### Example 2
+Goal: Remap a set of object properties inside a new one.
+
+#### Abstract
 
 ``` javascript
-// Example 2: Renames a object property using nesting keys
+  var objectToNormalize = {
+    ...,
+    property1: value1,
+    property2: value2,
+    ...
+  };
+  
+  var transformMap = {
+    ...,
+    [ 'newPropertyName.newNameForProperty1', 'property1'], // Uses dot notation
+    [ 'newPropertyName.newNameForProperty2', 'property2'], // Uses dot notation
+    ...
+  };
+   
+  n.normalize(objToNormalize, transformMap, ...);
+   
+  /* OUTPUT OBJECT:
+  {
+    ...,
+    newPropertyName: {
+      newNameForProperty1: value1,
+      newNameForProperty2: value2
+    }
+    ...
+  }
+  */
+```
+
+#### Practical
+
+``` javascript
+var n = require('normalize-data');
+
+var objToNormalize = {
+  name: 'Mario',
+  surname: 'Rossi',
+  street: '803 11th Avenue',
+  state: 'California',
+  postalCode: '94089'
+};
 
 var transformMap = [
-  ...,
-  ["info.fullName", "name"], // The property "name" of the initial object will be renamed in "fullName" that will become a key of the info propery object.
-  ...
-]
+  ['address.street', 'street'],
+  ['address.state', 'state'],
+  ['address.postalCode', 'postalCode']
+];
+
+// Note that we're using the "preserve" parameter to true for preserving the old object structure
+console.log(n.normalize(objToNormalize, transformMap, true));
+
+/* OUTPUT OBJECT:
+{
+  name: 'Mario',
+  surname: 'Rossi',
+  address: {
+    street: '803 11th Avenue',
+    state: 'California',
+    postalCode: '94089'
+  }
+}
+*/
 ```
 
-#### Example 3
+### Example 3
+Goal: Collect property values inside a new object property.
+The example shows how to create a new object property whose value is an array that contains another property values.
+
+#### Abstract
 
 ``` javascript
-// Example 2: Renames a object property using nesting keys and capitalizes the property value
+  var objectToNormalize = {
+    ...,
+    property1: value1,
+    property2: value2,
+    ...
+  };
+  
+  var transformMap = {
+    ...,
+    [ 'newPropertyName', [ 'property1', 'property2' ],
+    ...
+  };
+   
+  n.normalize(objToNormalize, transformMap, ...);
+   
+  /* OUTPUT OBJECT:
+  {
+    ...,
+    newPropertyName: [ value1, value2 ],
+    ...
+  }
+  */
+```
 
+#### Practical
+
+``` javascript
+var n = require('normalize-data');
+
+var objToNormalize = {
+  name: 'Mario',
+  surname: 'Rossi',
+  hobby1: 'Golf',
+  hobby2: 'Football',
+  hobby3: 'Tennis'
+};
+
+var transformMap = [
+  ['hobbies', ['hobby1', 'hobby2', 'hobby3']]
+];
+
+/*
+  Alternative transformMap that you could use to achieve the same goal:
+  
+  var transformMap = [
+    ['hobbies.0', 'hobby1'],
+    ['hobbies.1', 'hobby2'],
+    ['hobbies.2', 'hobby3']
+  ];
+*/
+
+// Note that we're using the "preserve" parameter to true for preserving the old object structure
+console.log(n.normalize(objToNormalize, transformMap, true));
+
+/* OUTPUT OBJECT:
+{
+  name: 'Mario',
+  surname: 'Rossi',
+  hobbies: ['Golf', 'Football', 'Tennis']
+}
+*/
+```
+
+### Example 4
+Goal: Create a new object property by using a transformation map.
+
+#### Abstract
+``` javascript
+  var objectToNormalize = {
+    ...,
+    property: value
+    ...
+  };
+  
+  function transformFunc(oldPropertyValue) {
+    return ...;
+  }
+  
+  var transformMap = {
+    ...,
+    ['newPropertyName', 'oldPropertyName', transformFunction],
+    ...
+  };
+   
+  n.normalize(objToNormalize, transformMap, ...);
+   
+  /* OUTPUT OBJECT:
+  {
+    ...,
+    newPropertyName: transformFunc(oldPropertyValue), // The return value of the transformation function
+    ...
+  }
+  */
+```
+
+#### Practical
+
+``` javascript
+var n = require('normalize-data');
+
+// Capitalizes the first letter of the name
 function capitalize(name) {
-  ...
+  return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
+var objToNormalize = {
+  name: 'mario',
+  surname: 'Rossi'
+};
+
 var transformMap = [
-  ...,
-  ["fullName", "name", capitalize], // No extra parameters for the function
-  ...
-]
+  ['name', 'name', capitalize] // Note that function hasn't extra parameters
+];
+
+// Note that we're using the "preserve" parameter to true for preserving the old object structure
+console.log(n.normalize(objToNormalize, transformMap, true));
+
+/* OUTPUT OBJECT:
+{
+  name: 'Mario',
+  surname: 'Rossi'
+}
+*/
 ```
 
-#### Example 4
+### Example 5
+Goal: Create a new object property by using a transformation map with extra parameters.
 
+#### Abstract
 ``` javascript
-// Example 2: Renames a object property using nesting keys and capitalizes the property value
-
-function transformationFuncX(name, optionalParam1, optionalParameter2) {
+var objectToNormalize = {
+  ...,
+  property: value
   ...
+};
+  
+function transformFunc(oldPropertyValue, optionalParam1, optionalParameter2, ...) {
+  return ...;
 }
 
 var transformMap = [
   ...,
-  ["fullName", "name", transformationFuncX, [optionalParam1, optionalParameter2]],
+  ['newPropertyName', 'oldPropertyName', transformFunc, [optionalParam1, optionalParameter2, ...]],
   ...
-]
+];
+ 
+n.normalize(objToNormalize, transformMap, ...);
+ 
+/* OUTPUT OBJECT:
+{
+  ...,
+  newPropertyName: transformFunc(oldPropertyValue, optionalParam1, optionalParameter2, ...), // The return value of the transformation function
+  ...
+}
+*/
+```
+
+#### Practical
+
+``` javascript
+var n = require('normalize-data');
+
+var objToNormalize = {
+  name: 'Mario',
+  surname: 'Rossi',
+  hobbies: ['Golf', 'Football', 'Tennis']
+};
+
+function takeFirstNHobbies(hobbies, n) {
+  var _hobbies = hobbies.slice(0, n);
+  return _hobbies.length > 1 ? _hobbies : _hobbies.join();
+}
+
+var transformMap = [
+  ['hobbies', 'hobbies', takeFirstNHobbies, 2]
+];
+
+// Note that we're using the "preserve" parameter to true for preserving the old object structure
+console.log(n.normalize(objToNormalize, transformMap, true));
+
+/* OUTPUT OBJECT:
+ {
+   name: 'Mario',
+   surname: 'Rossi',
+   hobbies: [ 'Golf', 'Football' ]
+ }
+ */
 ```
 
 ## Author

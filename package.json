@@ -1,6 +1,6 @@
 {
   "name": "normalize-data",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "A library to easily normalize complex data structure.",
   "main": "build/index.js",
   "scripts": {
@@ -32,12 +32,13 @@
   },
   "keywords": [
     "normalize",
+    "transform",
     "data",
     "object",
     "structure",
-    "transform",
     "convert",
-    "converting"
+    "converting",
+    "adapter"
   ],
   "devDependencies": {
     "babel-cli": "^6.24.0",
