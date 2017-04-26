@@ -32,12 +32,13 @@
   },
   "keywords": [
     "normalize",
+    "transform",
     "data",
     "object",
     "structure",
-    "transform",
     "convert",
-    "converting"
+    "converting",
+    "adapter"
   ],
   "devDependencies": {
     "babel-cli": "^6.24.0",
