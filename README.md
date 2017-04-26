@@ -10,7 +10,7 @@ Simply you can:
 - rename the object properties
 - change the property depth
 - transform the properties values by dedicated functions
-- create a new object property starting from another object properties
+- create a new property starting from another object properties
 
 ## Installation
 Install the library as any other global npm package. Be sure to have npm, git and node installed.
