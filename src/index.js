@@ -22,7 +22,7 @@ const normalize = (obj, map, preserve = false) => {
       value = objPath.get(obj, p2);
     }
     // If the property value exists
-    if (value) {
+    if (typeof value !== 'undefined') {
       // If the transformation function exists
       if (p3 && typeof (p3) === 'function') {
         // Prepare the value to be passed as argument
